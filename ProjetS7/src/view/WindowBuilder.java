@@ -4,16 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -44,10 +48,10 @@ public class WindowBuilder implements ChangeListener {
 	private final Draw draw = new Draw();
 	private JLabel nameR;
 	private JLabel nameSmallR;
-	private JLabel namePen;;
+	private JLabel namePen;
 
 	public WindowBuilder() {
-
+	
 		initFrame();
 		initComponent();
 		iconsConfig();
@@ -63,10 +67,10 @@ public class WindowBuilder implements ChangeListener {
 		frame.getContentPane().add(canvas, BorderLayout.WEST);
 		frame.getContentPane().add(panel);
 		
-		nameR = new JLabel("Big Circle Radius");
+		nameR = new JLabel("Fixed Circle Radius");
 		nameR.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 16));
 		nameR.setHorizontalAlignment(SwingConstants.LEFT);
-		nameR.setBounds(2, 40, 130, 17);
+		nameR.setBounds(2, 40, 140, 17);
 		panel.add(nameR);
 		
 		nameSmallR = new JLabel("Moving Circle Radius");
@@ -80,6 +84,9 @@ public class WindowBuilder implements ChangeListener {
 		namePen.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 16));
 		namePen.setBounds(2, 540, 130, 17);
 		panel.add(namePen);
+		
+		test();
+		
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		stateChanged(null);
@@ -282,5 +289,29 @@ public class WindowBuilder implements ChangeListener {
 			frame.repaint();
 		}
 		draw.show();
+	}
+	
+	public void test() {
+		double R = 100;
+		double r = 69;
+		double d = 80;
+		
+		ActionListener updateSpiro = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				double t = 0;
+				double x = (R - r) * Math.cos(t) + d * Math.cos(((R - r) / r) * t);
+				double y = (R - r) * Math.sin(t) - d * Math.sin(((R - r) / r) * t);
+				draw.clear(Color.WHITE);
+				draw.setPenColor(Color.getHSBColor((float) (t / Math.PI), 1.0f, 1.0f));
+				draw.point(50, 40);
+				frame.repaint();
+				
+				t++;
+			
+			}
+		};
+		Timer tm = new Timer(10000, updateSpiro);
+		tm.start();
 	}
 }
