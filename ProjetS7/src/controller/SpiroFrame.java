@@ -29,7 +29,7 @@ public final class SpiroFrame {
 	private int height = 720;
 	private double radiusOfPen;
 	// To show or not the window
-	private boolean defer = true;
+	private boolean state = true;
 	private double xmin, ymin, xmax, ymax;
 	// JLabel for drawing
 	private JLabel spiro;
@@ -182,7 +182,7 @@ public final class SpiroFrame {
 	 * Method to draw onscreen
 	 */
 	private void drawSpiro() {
-		if (!defer)
+		if (!state)
 			showDrawing();
 	}
 
