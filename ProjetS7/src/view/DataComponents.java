@@ -16,6 +16,9 @@ public class DataComponents {
 	private JLabel movingValue;
 	private JLabel penValue;
 
+	/**
+	 * Sliders builder
+	 */
 	public DataComponents() {
 
 		sliderFixedRadius = new JSlider(SwingConstants.VERTICAL, 0, 100, 60);
@@ -32,6 +35,11 @@ public class DataComponents {
 
 	}
 
+	/**
+	 * Method to create fixed circle slider
+	 * 
+	 * @return sliderFixedRadius
+	 */
 	public JSlider fixedSl() {
 		sliderFixedRadius.setPaintTicks(true);
 		sliderFixedRadius.setPaintLabels(true);
@@ -46,6 +54,11 @@ public class DataComponents {
 
 	}
 
+	/**
+	 * Method to create moving circle slider
+	 * 
+	 * @return sliderMovingRadius
+	 */
 	public JSlider movingSl() {
 		sliderMovingRadius.setPaintTicks(true);
 		sliderMovingRadius.setPaintLabels(true);
@@ -59,6 +72,11 @@ public class DataComponents {
 		return sliderMovingRadius;
 	}
 
+	/**
+	 * Method to create pen slider
+	 * 
+	 * @return sliderPenLength
+	 */
 	public JSlider penSl() {
 		sliderPenLength.setPaintTicks(true);
 		sliderPenLength.setPaintLabels(true);

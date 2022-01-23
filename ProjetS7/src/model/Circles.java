@@ -5,7 +5,7 @@ public class Circles {
 	private double fixedCirleRadius;
 	private double movingCircleRadius;
 	private double penLength;
-	
+
 	/**
 	 * @param fixedCirleRadius
 	 * @param movingCircleRadius
@@ -58,8 +58,5 @@ public class Circles {
 	public void setPenLength(double penLength) {
 		this.penLength = penLength;
 	}
-	
-	
-	
-	
+
 }

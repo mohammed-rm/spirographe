@@ -13,7 +13,7 @@ public class Bottom extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 *
+	 * Builder for the bottom panel
 	 */
 	public Bottom() {
 		setOpaque(false);
@@ -24,7 +24,7 @@ public class Bottom extends JPanel {
 	}
 
 	/**
-	 *
+	 * Method to change the shape and color of the bottom panel
 	 */
 	@Override
 	protected void paintComponent(Graphics grphcs) {

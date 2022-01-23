@@ -13,7 +13,7 @@ public class Top extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 *
+	 * Top panel builder
 	 */
 	public Top() {
 		setOpaque(false);
@@ -23,7 +23,7 @@ public class Top extends JPanel {
 	}
 
 	/**
-	 *
+	 * Method to change the shape and the color of the top panel
 	 */
 	@Override
 	protected void paintComponent(Graphics grphcs) {

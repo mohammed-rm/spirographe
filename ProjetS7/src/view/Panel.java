@@ -8,16 +8,12 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
-/**
- * @author RMICH Mohammed
- *
- */
 public class Panel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 *
+	 * Panel builder
 	 */
 	public Panel() {
 		setOpaque(false);
@@ -26,7 +22,7 @@ public class Panel extends JPanel {
 	}
 
 	/**
-	 *
+	 * Method to change the shape and the color of the main panel
 	 */
 	@Override
 	protected void paintComponent(Graphics grphcs) {

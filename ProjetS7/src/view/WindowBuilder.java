@@ -3,29 +3,25 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import controller.BottomItems;
-import controller.Draw;
+import controller.SpiroFrame;
 import controller.IconsResize;
-import java.awt.Font;
 
 public class WindowBuilder implements ChangeListener {
 
@@ -45,13 +41,16 @@ public class WindowBuilder implements ChangeListener {
 	private JSlider sliderSmallR;
 	private JSlider sliderPen;
 
-	private final Draw draw = new Draw();
+	private final SpiroFrame draw = new SpiroFrame();
 	private JLabel nameR;
 	private JLabel nameSmallR;
 	private JLabel namePen;
 
+	/**
+	 * Window builder
+	 */
 	public WindowBuilder() {
-	
+
 		initFrame();
 		initComponent();
 		iconsConfig();
@@ -59,40 +58,40 @@ public class WindowBuilder implements ChangeListener {
 		frameListener();
 		toMoveFrame();
 
-		draw.setXscale(-3, +3);
-		draw.setYscale(-2, +2);
-		draw.enableDoubleBuffering();
-		JLabel canvas = draw.getJLabel();
+		draw.modifyXscale(-3, +3);
+		draw.modifyYscale(-2, +2);
+		JLabel canvas = draw.getSpiroLabel();
 
 		frame.getContentPane().add(canvas, BorderLayout.WEST);
 		frame.getContentPane().add(panel);
-		
+
 		nameR = new JLabel("Fixed Circle Radius");
 		nameR.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 16));
 		nameR.setHorizontalAlignment(SwingConstants.LEFT);
 		nameR.setBounds(2, 40, 140, 17);
 		panel.add(nameR);
-		
+
 		nameSmallR = new JLabel("Moving Circle Radius");
 		nameSmallR.setHorizontalAlignment(SwingConstants.LEFT);
 		nameSmallR.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 16));
 		nameSmallR.setBounds(2, 290, 150, 17);
 		panel.add(nameSmallR);
-		
+
 		namePen = new JLabel("Pen Length");
 		namePen.setHorizontalAlignment(SwingConstants.LEFT);
 		namePen.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 16));
 		namePen.setBounds(2, 540, 130, 17);
 		panel.add(namePen);
-		
-		test();
-		
+
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.pack();
 		stateChanged(null);
 		frame.setVisible(true);
 	}
 
+	/**
+	 * Method to initialize the frame
+	 */
 	public void initFrame() {
 		frame.setUndecorated(true);
 		frame.setBackground(new Color(0, 0, 0, 0));
@@ -103,6 +102,9 @@ public class WindowBuilder implements ChangeListener {
 				screenSize.height / 2 - frame.getPreferredSize().height / 2);
 	}
 
+	/**
+	 * Method to initialize the frame components
+	 */
 	public void initComponent() {
 		panel = new Panel();
 		bottom = new Bottom();
@@ -117,6 +119,9 @@ public class WindowBuilder implements ChangeListener {
 		sliderPen.addChangeListener(this);
 	}
 
+	/**
+	 * Method to add the components to the frame
+	 */
 	public void addComponents() {
 		bottom.add(itemRights.createLabName());
 		bottom.add(itemRights.createTime());
@@ -263,6 +268,9 @@ public class WindowBuilder implements ChangeListener {
 		return frame;
 	}
 
+	/**
+	 * Listener to get values from sliders and draw the spirograph
+	 */
 	@Override
 	public void stateChanged(ChangeEvent evt) {
 
@@ -274,44 +282,16 @@ public class WindowBuilder implements ChangeListener {
 		data.getMovingValue().setText("Value r : " + sliderSmallR.getValue());
 		data.getPenValue().setText("Value d : " + sliderPen.getValue());
 
-		draw.clear(Color.BLACK);
-		draw.show();
+		draw.remove(Color.BLACK);
+		draw.showDrawing();
 		for (double t = 0.0; t < 300; t += 0.002) {
-			// Outside movement
-			// double x = (R + r) * Math.cos(t) - (r + a) * Math.cos(((R + r) / r) * t);
-			// double y = (R + r) * Math.sin(t) - (r + a) * Math.sin(((R + r) / r) * t);
-
-			// Inside movement
 			double x = (R - r) * Math.cos(t) + d * Math.cos(((R - r) / r) * t);
 			double y = (R - r) * Math.sin(t) - d * Math.sin(((R - r) / r) * t);
-			draw.setPenColor(Color.getHSBColor((float) (t / Math.PI), 1.0f, 1.0f));
-			draw.point(x, y);
+			draw.definePenColor(Color.getHSBColor((float) (t / Math.PI), 1.0f, 1.0f));
+			draw.drawPoint(x, y);
 			frame.repaint();
 		}
-		draw.show();
+		draw.showDrawing();
 	}
-	
-	public void test() {
-		double R = 100;
-		double r = 69;
-		double d = 80;
-		
-		ActionListener updateSpiro = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				double t = 0;
-				double x = (R - r) * Math.cos(t) + d * Math.cos(((R - r) / r) * t);
-				double y = (R - r) * Math.sin(t) - d * Math.sin(((R - r) / r) * t);
-				draw.clear(Color.WHITE);
-				draw.setPenColor(Color.getHSBColor((float) (t / Math.PI), 1.0f, 1.0f));
-				draw.point(50, 40);
-				frame.repaint();
-				
-				t++;
-			
-			}
-		};
-		Timer tm = new Timer(10000, updateSpiro);
-		tm.start();
-	}
+
 }
